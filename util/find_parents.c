@@ -33,7 +33,7 @@ void read_hlist(char *filename) {
   char buffer[1024];
 
   SHORT_PARSETYPE;
-  #define NUM_INPUTS 45
+  #define NUM_INPUTS 44
   enum short_parsetype stypes[NUM_INPUTS] = 
     { D64, D64, F, F, F,  //  #id desc_id mvir vmax vrms
       F, F, D64, F,       //  Rvir Rs Np x 
@@ -107,7 +107,7 @@ void read_hlist(char *filename) {
 
 int main(int argc, char **argv)
 {
-  if (argc < 2) {
+  if (argc <= 2) {
     printf("Usage: %s hlist box_size\n", argv[0]);
     exit(1);
   }

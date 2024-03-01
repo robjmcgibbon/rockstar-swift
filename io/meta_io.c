@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/stat.h>
 #include <string.h>
 #include <strings.h>
 #include <assert.h>
@@ -101,7 +102,9 @@ void get_input_filename(char *buffer, int maxlen, int64_t snap, int64_t block) {
 
 void get_output_filename(char *buffer, int maxlen, int64_t snap, int64_t chunk, char *type) {
   int64_t out = 0;
-  snprintf(buffer, maxlen, "%s/", OUTBASE);
+  /*TODO: This only works when using snapnames.txt*/
+  snprintf(buffer, maxlen, "%s/snapshot_%s/", OUTBASE, snapnames[snap]);
+  mkdir(buffer, 0777);
   out = strlen(buffer);
   if (snapnames) snprintf(buffer+out, maxlen-out, "halos_%s", snapnames[snap]);
   else snprintf(buffer+out, maxlen-out, "halos_%"PRId64, snap);
@@ -388,7 +391,7 @@ char *gen_merger_catalog(int64_t snap, int64_t chunk, struct halo *halos, int64_
 
   if (chunk == 0) {
     char buffer[1024];
-    snprintf(buffer, 1024, "%s/out_%"PRId64".list", OUTBASE, snap);
+    snprintf(buffer, 1024, "%s/out_%s.list", OUTBASE, snapnames[snap]);
     output = check_fopen(buffer, "w");
     hchars += fprintf(output, "#ID DescID M%s Vmax Vrms R%s Rs Np X Y Z VX VY VZ JX JY JZ Spin rs_klypin M%s_all M%s M%s M%s M%s Xoff Voff spin_bullock b_to_a c_to_a A[x] A[y] A[z] b_to_a(%s) c_to_a(%s) A[x](%s) A[y](%s) A[z](%s) T/|U| M_pe_Behroozi M_pe_Diemer Type SM Gas BH_Mass\n",
 		      MASS_DEFINITION, MASS_DEFINITION, MASS_DEFINITION, MASS_DEFINITION2, MASS_DEFINITION3, MASS_DEFINITION4, MASS_DEFINITION5, MASS_DEFINITION4, MASS_DEFINITION4, MASS_DEFINITION4, MASS_DEFINITION4, MASS_DEFINITION4);
@@ -426,7 +429,7 @@ char *gen_merger_catalog(int64_t snap, int64_t chunk, struct halo *halos, int64_
 void output_merger_catalog(int64_t snap, int64_t chunk, int64_t location, int64_t length, char *cat) {
   FILE *output;
   char buffer[1024];
-  snprintf(buffer, 1024, "%s/out_%"PRId64".list", OUTBASE, snap);
+  snprintf(buffer, 1024, "%s/out_%s.list", OUTBASE, snapnames[snap]);
   output = check_fopen(buffer, "r+");
   check_lseek(fileno(output), location, SEEK_SET); //Increases length as needed
   check_fseeko(output, location, SEEK_SET); //Sets stream file pointer
