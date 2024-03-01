@@ -11,7 +11,8 @@
 struct particle {
   int64_t id;
   float pos[6];
-  float mass, energy; /*Energy per unit mass*/
+  float mass;
+  float energy; /* Energy per unit mass */
   float softening; /* Per-particle softening, not currently used. */
   float metallicity; /* Not currently used. */
   int32_t type;

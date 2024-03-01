@@ -27,6 +27,7 @@
 #ifdef ENABLE_HDF5
 #include "io_arepo.h"
 #include "io_enzo.h"
+#include "io_swift.h"
 #endif /* ENABLE_HDF5 */
 
 char **snapnames = NULL;
@@ -72,7 +73,8 @@ void get_input_filename(char *buffer, int maxlen, int64_t snap, int64_t block) {
 	else {
 	  if (!strncasecmp(FILE_FORMAT, "GADGET", 6) ||
 	      !strncasecmp(FILE_FORMAT, "LGADGET", 7) ||
-	      !strncasecmp(FILE_FORMAT, "AREPO", 5))
+	      !strncasecmp(FILE_FORMAT, "AREPO", 5) ||
+	      !strncasecmp(FILE_FORMAT, "SWIFT", 5))
 	    snprintf(buffer+out, maxlen-out, "%03"PRId64, snap);
 	  else if (!strncasecmp(FILE_FORMAT, "ENZO", 4))
 	    snprintf(buffer+out, maxlen-out, "%04"PRId64, snap);
@@ -137,6 +139,9 @@ void read_particles(char *filename) {
 #ifdef ENABLE_HDF5
   else if (!strncasecmp(FILE_FORMAT, "AREPO", 5)) {
     load_particles_arepo(filename, &p, &num_p);
+  }
+  else if (!strncasecmp(FILE_FORMAT, "SWIFT", 5)) {
+    load_particles_swift(filename, &p, &num_p);
   }
   else if (!strncasecmp(FILE_FORMAT, "ENZO", 4)) {
     load_particles_enzo(filename, &p, &num_p);
