@@ -208,7 +208,9 @@ void link_particle_types(struct fof *f) {
   int64_t idx[NUM_RTYPES];
   for (i=0; i<NUM_RTYPES; i++) idx[i] = -1;
   for (i=0; i<f->num_p; i++) {
-    int64_t type = f->particles[i].type;
+    /*TODO: Not linking particles by type*/
+    /*int64_t type = f->particles[i].type;*/
+    int64_t type = 0;
     if (idx[type] < 0) { idx[type] = i; continue; }
     struct particle *tp[2] = {f->particles+idx[type], f->particles+i};
     link_particle_to_fof(f->particles+idx[type], 2, tp);
@@ -243,7 +245,9 @@ int64_t separate_dm(struct fof *f) {
 }
 
 
-#define MAX_PARTICLES_TO_SAMPLE 10000
+/*TODO: Setting EXACT_LL_CALC stops code running, set high threshold instead*/
+/*#define MAX_PARTICLES_TO_SAMPLE 10000*/
+#define MAX_PARTICLES_TO_SAMPLE 10000000
 void _find_subfofs_better2(struct fof *f,  float thresh) {
   int64_t i, j, num_test = MAX_PARTICLES_TO_SAMPLE;
   float target_r = 0;
