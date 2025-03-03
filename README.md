@@ -1,11 +1,9 @@
+# ROCKSTAR-SWIFT
+This code was cloned from the rockstar-galaxies halo repo. The only changes are the ability to read in the SWIFT snapshot format, and some scripts for running on COSMA.
 
+We read can read the output of this version of ROCKSTAR into SOAP, but **THIS PROBABLY SHOULD NOT BE DONE**. Rockstar outputs the particles associated with a subhalo before unbinding has been completed, which is not consistent with the other subhalo finders we use in SOAP.
 
-
-
-
-
-
-
+Note that there is now [an MPI version of ROCKSTAR](https://github.com/Tomoaki-Ishiyama/mpi-rockstar/) which would probably be better than this version if we want to use ROCKSTAR in the future.
 
 # The Rockstar-Galaxies Halo Finder
 
